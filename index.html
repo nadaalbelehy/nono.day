@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang='ar' dir='rtl'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Nono Day</title>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:linear-gradient(135deg,#fdf2f8,#eef2ff);display:flex;justify-content:center;padding:40px}
+.card{width:100%;max-width:700px;background:#ffffffcc;backdrop-filter:blur(10px);border-radius:24px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+h1{text-align:center;color:#7c3aed}#quote{text-align:center;color:#666}.row{display:flex;gap:8px}input{flex:1;padding:12px;border-radius:12px;border:1px solid #ddd}button{border:0;border-radius:12px;padding:12px;background:#8b5cf6;color:#fff}.item{display:flex;justify-content:space-between;background:#faf5ff;padding:10px;border-radius:12px;margin:8px 0}.done{text-decoration:line-through;color:#888}.bar{height:12px;background:#eee;border-radius:99px}.fill{height:100%;background:#8b5cf6;width:0;border-radius:99px}
+</style></head><body><div class='card'><h1>🌸 Nono Day</h1><div id='quote'></div><div class='bar'><div class='fill' id='fill'></div></div><br><div class='row'><input id='task' placeholder='اكتبي مهمة جديدة...'><button onclick='add()'>إضافة</button></div><div id='list'></div></div>
+<script>
+const quotes=['ابدئي بخطوة صغيرة ❤️','كل مهمة تنتهي تقربك لهدفك 🌷','الاستمرار أهم من الكمال ✨'];
+quote.innerText=quotes[new Date().getDate()%quotes.length];
+const day=new Date().toDateString();if(localStorage.day!==day){localStorage.day=day;localStorage.tasks='[]';}
+let tasks=JSON.parse(localStorage.tasks||'[]');
+function save(){localStorage.tasks=JSON.stringify(tasks)}
+function draw(){list.innerHTML='';let d=0;tasks.forEach((t,i)=>{if(t.d)d++;list.innerHTML+=`<div class=item><span class='${t.d?'done':''}'><input type=checkbox ${t.d?'checked':''} onchange='tg(${i})'> ${t.t}</span><span><button onclick='ed(${i})'>✏️</button> <button onclick='rm(${i})'>🗑️</button></span></div>`});fill.style.width=(tasks.length?d/tasks.length*100:0)+'%';if(tasks.length&&d==tasks.length)setTimeout(()=>alert('🎉 أحسنتِ! خلصتِ كل مهام اليوم.'),100);save();}
+function add(){if(!task.value.trim())return;tasks.push({t:task.value,d:false});task.value='';draw()}
+function tg(i){tasks[i].d=!tasks[i].d;draw()}
+function rm(i){tasks.splice(i,1);draw()}
+function ed(i){let n=prompt('تعديل المهمة',tasks[i].t);if(n){tasks[i].t=n;draw()}}
+draw();
+</script></body></html>
